@@ -1,0 +1,85 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #d8e0c0;
+  padding: 60px;
+
+  .container {
+    max-width: 500px;
+    margin: auto;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 8px;
+
+    h1,
+    h2, h3 {
+      font-size: 40px;
+      margin: 0 0 10px 0;
+    }
+
+    h1,
+    h2, h3,
+    p {
+      text-align: center;
+    }
+
+    button {
+      background: #4CAF50;
+      color: #000000;
+      text-transform: uppercase;
+      font-size: 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      padding: 12px;
+
+      &:hover {
+        background-color: #145c16;
+        color: #ffffff;
+      }
+    }
+
+    input {
+      background: #ece8e8;
+      border: none;
+    }
+
+    input,
+    textarea {
+      padding: 8px;
+    }
+
+    input,
+    textarea,
+    button {
+      width: 100%;
+      margin: 10px 0;
+      font-size: 1em;
+    }
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.message {
+  text-align: center;
+  font-size: 0.9em;
+}
+
+.card {
+  margin-top: 20px;
+}
+
+.post {
+  background: #eaeaea;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
