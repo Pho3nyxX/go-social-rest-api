@@ -1,7 +1,18 @@
+import { validateUsername, validateEmail } from "./validation.js";
+
 const registerBtn = document.getElementById("registerBtn");
-const loginBtn = document.getElementById("loginBtn");
-const postBtn = document.getElementById("postBtn");
-const postsContainer = document.getElementById("postsContainer");
+// const loginBtn = document.getElementById("loginBtn");
+// const postBtn = document.getElementById("postBtn");
+// const postsContainer = document.getElementById("postsContainer");
+
+function showMessage(element, text, duration = 3000) {
+    element.textContent = text;
+    if (duration > 0) {
+        setTimeout(() => {
+            element.textContent = "";
+        }, duration);
+    }
+}
 
 if (registerBtn) {
     registerBtn.addEventListener("click", async () => {
@@ -9,18 +20,22 @@ if (registerBtn) {
         const emailInput = document.getElementById("email");
         const message = document.getElementById("message");
 
-        const username = usernameInput.value.trim();
-        const email = emailInput.value.trim();
+        let username = usernameInput.value.trim();
+        let email = emailInput.value.trim();
 
-        // validation
-        if (!username || !email) {
-            message.textContent = "Username and email are required";
+        let usernameError = validateUsername(username);
+        if (usernameError) {
+            showMessage(message, usernameError);
             return;
         }
 
-        // disable button while submitting
+        let emailError = validateEmail(email);
+        if (emailError) {
+            showMessage(message, emailError);
+            return;
+        }
+
         registerBtn.disabled = true;
-        registerBtn.textContent = "Registering...";
 
         try {
             const res = await fetch("http://localhost:8080/register", {
@@ -29,23 +44,20 @@ if (registerBtn) {
                 body: JSON.stringify({ username, email })
             });
 
-            // check HTTP status
+            let data = await res.json();
+
             if (!res.ok) {
-                const errorData = await res.json();
-                throw new Error(errorData.message || "Registration failed");
+                throw new Error(data.message || "Registration failed");
             }
 
-            const data = await res.json();
-            message.textContent = data.message || "Registered successfully";
+            showMessage(message, data.message || "Registered successfully");
 
-            // clear form
             usernameInput.value = "";
             emailInput.value = "";
 
         } catch (err) {
-            message.textContent = err.message || "Registration failed";
+            showMessage(message, err.message || "Registration failed");
         } finally {
-            // re-enable button
             registerBtn.disabled = false;
             registerBtn.textContent = "Register";
         }

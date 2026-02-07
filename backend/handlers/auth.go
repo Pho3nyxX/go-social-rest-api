@@ -8,6 +8,7 @@ import (
 
 	"github.com/Pho3nyxX/social-media-restful-api-go/config"
 	"github.com/Pho3nyxX/social-media-restful-api-go/models"
+	"github.com/Pho3nyxX/social-media-restful-api-go/utils"
 )
 
 func Register(w http.ResponseWriter, r *http.Request) {
@@ -22,10 +23,18 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if user.Username == "" || user.Email == "" {
+	if message := utils.ValidateUsername(user.Username); message != "" {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(map[string]string{
-			"message": "Username and email required",
+			"message": message,
+		})
+		return
+	}
+
+	if message := utils.ValidateEmail(user.Email); message != "" {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]string{
+			"message": message,
 		})
 		return
 	}

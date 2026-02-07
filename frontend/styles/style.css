@@ -17,13 +17,15 @@ body {
     border-radius: 8px;
 
     h1,
-    h2, h3 {
+    h2,
+    h3 {
       font-size: 40px;
       margin: 0 0 10px 0;
     }
 
     h1,
-    h2, h3,
+    h2,
+    h3,
     p {
       text-align: center;
     }
@@ -41,6 +43,11 @@ body {
       &:hover {
         background-color: #145c16;
         color: #ffffff;
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
       }
     }
 
