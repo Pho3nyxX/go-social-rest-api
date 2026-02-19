@@ -2,32 +2,28 @@ package main
 
 import (
 	"log"
-	"net/http"
 	"os"
+
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
 
 	"github.com/Pho3nyxX/social-media-restful-api-go/config"
 	"github.com/Pho3nyxX/social-media-restful-api-go/routes"
+	"github.com/Pho3nyxX/social-media-restful-api-go/utils"
 	"github.com/joho/godotenv"
 )
 
 func main() {
 	godotenv.Load()
 	config.ConnectDB()
+	utils.InitValidator()
 
-	routes.RegisterRoutes()
+	router := gin.Default()
+	router.SetTrustedProxies(nil)
 
-	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	router.Use(cors.Default())
 
-		if r.Method == http.MethodOptions {
-			w.WriteHeader(http.StatusOK)
-			return
-		}
-
-		http.DefaultServeMux.ServeHTTP(w, r)
-	})
+	routes.RegisterRoutes(router)
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -35,5 +31,5 @@ func main() {
 	}
 
 	log.Println("Server running on port", port)
-	log.Fatal(http.ListenAndServe(":"+port, handler))
+	router.Run(":" + port)
 }

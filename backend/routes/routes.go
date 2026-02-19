@@ -1,11 +1,11 @@
 package routes
 
 import (
-	"net/http"
+	"github.com/gin-gonic/gin"
 
 	"github.com/Pho3nyxX/social-media-restful-api-go/handlers"
 )
 
-func RegisterRoutes() {
-	http.HandleFunc("/register", handlers.Register)
+func RegisterRoutes(r *gin.Engine) {
+	r.POST("/register", handlers.Register)
 }
