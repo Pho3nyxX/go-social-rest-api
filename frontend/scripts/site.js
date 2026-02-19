@@ -36,6 +36,7 @@ if (registerBtn) {
         }
 
         registerBtn.disabled = true;
+        registerBtn.textContent = "Registering...";
 
         try {
             const res = await fetch("http://localhost:8080/register", {
@@ -47,7 +48,7 @@ if (registerBtn) {
             let data = await res.json();
 
             if (!res.ok) {
-                throw new Error(data.message || "Registration failed");
+                throw new Error(data.error || "Registration failed");
             }
 
             showMessage(message, data.message || "Registered successfully");
@@ -55,11 +56,15 @@ if (registerBtn) {
             usernameInput.value = "";
             emailInput.value = "";
 
+            setTimeout(() => {
+                window.location.href = "login.html";
+            }, 1000);
+
         } catch (err) {
             showMessage(message, err.message || "Registration failed");
         } finally {
             registerBtn.disabled = false;
-            registerBtn.textContent = "Register";
+            registerBtn.textContent = "Register.";
         }
     });
 }
