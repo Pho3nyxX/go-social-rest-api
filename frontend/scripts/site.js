@@ -1,4 +1,4 @@
-import { validateUsername, validateEmail } from "./validation.js";
+import { validateUsername, validateEmail, validatePassword } from "./validation.js";
 
 const registerBtn = document.getElementById("registerBtn");
 // const loginBtn = document.getElementById("loginBtn");
@@ -18,10 +18,12 @@ if (registerBtn) {
     registerBtn.addEventListener("click", async () => {
         const usernameInput = document.getElementById("username");
         const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
         const message = document.getElementById("message");
 
         let username = usernameInput.value.trim();
         let email = emailInput.value.trim();
+        let password = passwordInput.value.trim();
 
         let usernameError = validateUsername(username);
         if (usernameError) {
@@ -35,6 +37,12 @@ if (registerBtn) {
             return;
         }
 
+        let passwordError = validatePassword(password);
+        if (passwordError) {
+            showMessage(message, passwordError);
+            return;
+        }
+
         registerBtn.disabled = true;
         registerBtn.textContent = "Registering...";
 
@@ -42,7 +50,7 @@ if (registerBtn) {
             const res = await fetch("http://localhost:8080/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username, email })
+                body: JSON.stringify({ username, email, password })
             });
 
             let data = await res.json();
@@ -55,6 +63,7 @@ if (registerBtn) {
 
             usernameInput.value = "";
             emailInput.value = "";
+            passwordInput.value = "";
 
             setTimeout(() => {
                 window.location.href = "login.html";

@@ -13,6 +13,7 @@ import (
 	"github.com/Pho3nyxX/social-media-restful-api-go/models"
 
 	"github.com/Pho3nyxX/social-media-restful-api-go/utils"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func Register(c *gin.Context) {
@@ -50,6 +51,13 @@ func Register(c *gin.Context) {
 		})
 		return
 	}
+
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to hash password"})
+		return
+	}
+	user.Password = string(hashedPassword)
 
 	_, err = collection.InsertOne(ctx, user)
 	if err != nil {

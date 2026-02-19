@@ -14,21 +14,37 @@ export function validateUsername(username) {
     if (/^_|_$/.test(username)) {
         return "Username cannot start or end with underscore";
     }
-
     return null;
 }
 
 export function validateEmail(email) {
-    if (!email) return "Email is required";
-
-    if (email.includes(" "))
+    if (!email){ 
+        return "Email is required";
+    }
+    if (email.includes(" ")) {
         return "Email cannot contain spaces";
+    }
 
-    const emailRegex =
-        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-    if (!emailRegex.test(email))
+    if (!emailRegex.test(email)) {
         return "Invalid email format";
+    }
+    return null;
+}
 
+export function validatePassword(password) {
+    if (!password) {
+        return "Password is required";
+    }
+    if (password.length < 6) {
+        return "Password must be at least 6 characters";
+    }
+    if (!/[0-9]/.test(password)) {
+        return "Password must contain at least one number";
+    }
+    if (!/[!@#$%^&*]/.test(password)) {
+        return "Password must contain at least one special character";
+    }
     return null;
 }
