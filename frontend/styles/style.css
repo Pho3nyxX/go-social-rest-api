@@ -69,6 +69,34 @@ body {
       font-size: 1em;
     }
   }
+
+  .links-container {
+    display: flex;
+    justify-content: space-between;
+
+    .back-link {
+      display: block;
+      margin-top: 15px;
+      font-size: 14px;
+      color: #555555;
+      text-decoration: none;
+      transition: 0.2s ease;
+
+      .arrow {
+        position: relative;
+        top: -3px;
+      }
+
+      &:hover {
+        color: #4CAF50;
+        transform: translateX(-3px);
+      }
+
+      &.forward:hover{
+        transform: translateX(3px);
+      }
+    }
+  }
 }
 
 .hidden {
@@ -80,13 +108,13 @@ body {
   font-size: 0.9em;
 }
 
-.card {
+/* .card {
   margin-top: 20px;
-}
+} */
 
-.post {
+/* .post {
   background: #eaeaea;
   padding: 10px;
   border-radius: 6px;
   margin-bottom: 10px;
-}
+} */

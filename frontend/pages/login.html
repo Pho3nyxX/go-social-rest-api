@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>Login</title>
   <link rel="stylesheet" href="../styles/style.css" />
 </head>
+
 <body>
   <div class="container">
     <h2>Login</h2>
@@ -13,9 +15,20 @@
     <input id="password" type="password" placeholder="Password" />
     <button id="loginBtn">Login</button>
 
+    <div class="links-container">
+      <a href="index.html" class="back-link">
+        <span class="arrow">←</span> Back to Home
+      </a>
+
+      <a href="register.html" class="back-link forward">
+        Register <span class="arrow">→</span>
+      </a>
+    </div>
+
     <p id="message" class="message"></p>
   </div>
 
   <script type="module" src="../scripts/site.js"></script>
 </body>
+
 </html>
