@@ -1,9 +1,17 @@
 import { validateUsername, validateEmail, validatePassword } from "./validation.js";
 
+document.addEventListener("DOMContentLoaded", () => {
+    const postsList = document.getElementById("postsList");
+    const postsCard = document.getElementById("postsCard");
+    // const postBtn = document.getElementById("postBtn");
+
+    postsList.addEventListener("click", () => {
+        postsCard.classList.toggle("active");
+    })
+});
+
 const registerBtn = document.getElementById("registerBtn");
 const loginBtn = document.getElementById("loginBtn");
-// const postBtn = document.getElementById("postBtn");
-// const postsContainer = document.getElementById("postsContainer");
 
 if (window.location.pathname.includes("dashboard.html")) {
     const token = localStorage.getItem("token");

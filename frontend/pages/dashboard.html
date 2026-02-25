@@ -1,34 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>Dashboard</title>
   <link rel="stylesheet" href="../styles/style.css" />
 </head>
-<body>
-  <div class="container">
-    <h2>Dashboard</h2>
 
-    <!-- <textarea id="postBody" placeholder="Write your post..."></textarea>
-    <button id="postBtn">Post</button>
+<body class="dashboard-body">
+  <div class="dashboard-layout">
 
-    <h3>Feed</h3>
-    <div id="postsContainer"></div> -->
+    <aside class="sidebar">
+      <ul>
+        <li>Home</li>
+        <li id="postsList">Posts</li>
+        <li>Logout</li>
+      </ul>
+    </aside>
 
-    <div class="card">
-      <h3>Create Post</h3>
-      <textarea id="postBody" placeholder="Write your post..."></textarea>
-      <button id="postBtn">Post</button>
-      <p id="post-message" class="message"></p>
-    </div>
+    <main class="dashboard-content">
+      <h1>Dashboard</h1>
+      <p>Welcome to your dashboard</p>
 
-    <div class="card">
-      <h3>Feed</h3>
-      <div id="postsContainer"></div>
-    </div>
+      <div class="card" id="postsCard">
+        <h3>Create Post</h3>
+        <textarea id="postBody" placeholder="Write your post..."></textarea>
+        <button id="postBtn">Post</button>
+        <p id="post-message" class="message"></p>
+      </div>
+    </main>
   </div>
-
-  <script src="../scripts/site.js"></script>
+  <script type="module" src="../scripts/site.js"></script>
 </body>
 
 </html>
