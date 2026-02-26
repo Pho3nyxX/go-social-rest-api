@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Create Post</title>
+    <link rel="stylesheet" href="../styles/style.css" />
+</head>
+
+<body class="dashboard-body">
+    <div class="dashboard-layout">
+
+        <aside class="sidebar">
+            <ul>
+                <li><a href="dashboard.html" class="sidebar-link">Home</a></li>
+                <li><a href="post.html" class="sidebar-link">Posts</a></li>
+                <li id="logoutBtn">Logout</li>
+            </ul>
+        </aside>
+
+        <main class="dashboard-content">
+            <h1>Create Post</h1>
+
+            <div class="card">
+                <textarea id="postBody" placeholder="Write your post..."></textarea>
+                <button id="postBtn">Post</button>
+                <p id="post-message" class="message"></p>
+            </div>
+        </main>
+    </div>
+
+    <script type="module" src="../scripts/site.js"></script>
+</body>
+
+</html>

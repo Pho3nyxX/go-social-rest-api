@@ -1,25 +1,25 @@
 import { validateUsername, validateEmail, validatePassword } from "./validation.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-    const postsList = document.getElementById("postsList");
-    const postsCard = document.getElementById("postsCard");
-    // const postBtn = document.getElementById("postBtn");
+    const token = localStorage.getItem("token");
+    const protectedPages = ["dashboard.html", "post.html"];
+    const currentPage = window.location.pathname.split("/").pop();
 
-    postsList.addEventListener("click", () => {
-        postsCard.classList.toggle("active");
-    })
+    if(protectedPages.includes(currentPage) && !token){
+        window.location.href = "login.html";
+    }
 });
 
 const registerBtn = document.getElementById("registerBtn");
 const loginBtn = document.getElementById("loginBtn");
 
-if (window.location.pathname.includes("dashboard.html")) {
-    const token = localStorage.getItem("token");
+// if (window.location.pathname.includes("dashboard.html")) {
+//     const token = localStorage.getItem("token");
 
-    if (!token) {
-        window.location.href = "login.html";
-    }
-}
+//     if (!token) {
+//         window.location.href = "login.html";
+//     }
+// }
 
 function showMessage(element, text, duration = 3000) {
     element.textContent = text;
