@@ -114,7 +114,22 @@ button {
 
   .dashboard-layout {
     display: flex;
+    flex-direction: column;
     min-height: 100vh;
+
+    .top-nav {
+      background: #c6d599;
+      padding: 15px 40px;
+      color: #191919;
+      font-size: 18px;
+      text-align: right;
+      border-bottom: 2px solid #b5c48a;
+    }
+
+    .dashboard-main {
+      display: flex;
+      flex: 1;
+    }
 
     .sidebar {
       width: 250px;

@@ -5,14 +5,40 @@ document.addEventListener("DOMContentLoaded", () => {
     const protectedPages = ["dashboard.html", "post.html"];
     const currentPage = window.location.pathname.split("/").pop();
 
-    if (protectedPages.includes(currentPage) && !token) {
+    if (protectedPages.includes(currentPage)) {
+        if (!token) {
+            window.location.href = "login.html";
+            return;
+        }
+    }
+
+    const decoded = parseJWT(token);
+
+    if (!decoded) {
+        localStorage.removeItem("token");
         window.location.href = "login.html";
+        return;
+    }
+
+    const welcomeMessage = document.getElementById("welcomeMessage");
+    if(welcomeMessage){
+        welcomeMessage.textContent = `Welcome, ${decoded.username}`;
     }
 });
 
 const registerBtn = document.getElementById("registerBtn");
 const loginBtn = document.getElementById("loginBtn");
 const logoutBtn = document.getElementById("logoutBtn");
+
+function parseJWT(token) {
+    try {
+        const base63Payload = token.split('.')[1];
+        const decodePayload = atob(base63Payload);
+        return JSON.parse(decodePayload);
+    } catch (e) {
+        return null;
+    }
+}
 
 function showMessage(element, text, duration = 3000) {
     element.textContent = text;
