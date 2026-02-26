@@ -5,21 +5,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const protectedPages = ["dashboard.html", "post.html"];
     const currentPage = window.location.pathname.split("/").pop();
 
-    if(protectedPages.includes(currentPage) && !token){
+    if (protectedPages.includes(currentPage) && !token) {
         window.location.href = "login.html";
     }
 });
 
 const registerBtn = document.getElementById("registerBtn");
 const loginBtn = document.getElementById("loginBtn");
-
-// if (window.location.pathname.includes("dashboard.html")) {
-//     const token = localStorage.getItem("token");
-
-//     if (!token) {
-//         window.location.href = "login.html";
-//     }
-// }
+const logoutBtn = document.getElementById("logoutBtn");
 
 function showMessage(element, text, duration = 3000) {
     element.textContent = text;
@@ -148,5 +141,12 @@ if (loginBtn) {
             loginBtn.disabled = false;
             loginBtn.textContent = "Login";
         }
+    })
+}
+
+if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+        localStorage.removeItem("token");
+        window.location.href = "login.html";
     })
 }
