@@ -118,7 +118,7 @@ button {
     min-height: 100vh;
 
     .top-nav {
-      background: #c6d599;
+      background: #94a957;
       padding: 15px 40px;
       color: #191919;
       font-size: 18px;
@@ -133,7 +133,7 @@ button {
 
     .sidebar {
       width: 250px;
-      background: #c6d599;
+      background: #c6d5995c;
       color: #191919;
       padding: 20px;
 

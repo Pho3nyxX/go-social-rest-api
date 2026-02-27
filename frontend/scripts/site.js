@@ -2,27 +2,34 @@ import { validateUsername, validateEmail, validatePassword } from "./validation.
 
 document.addEventListener("DOMContentLoaded", () => {
     const token = localStorage.getItem("token");
-    const protectedPages = ["dashboard.html", "post.html"];
     const currentPage = window.location.pathname.split("/").pop();
+    const protectedPages = ["dashboard.html", "post.html"];
+    const publicPages = ["login.html", "register.html"];
 
     if (protectedPages.includes(currentPage)) {
         if (!token) {
             window.location.href = "login.html";
             return;
         }
+
+        const decoded = parseJWT(token);
+        if (!decoded) {
+            localStorage.removeItem("token");
+            window.location.href = "login.html";
+            return;
+        }
+
+        const welcomeMessage = document.getElementById("welcomeMessage");
+        if (welcomeMessage) {
+            welcomeMessage.textContent = `Welcome, ${decoded.username}`;
+        }
     }
 
-    const decoded = parseJWT(token);
-
-    if (!decoded) {
-        localStorage.removeItem("token");
-        window.location.href = "login.html";
-        return;
-    }
-
-    const welcomeMessage = document.getElementById("welcomeMessage");
-    if(welcomeMessage){
-        welcomeMessage.textContent = `Welcome, ${decoded.username}`;
+    if (publicPages.includes(currentPage)) {
+        if (token) {
+            window.location.href = "dashboard.html";
+            return;
+        }
     }
 });
 
