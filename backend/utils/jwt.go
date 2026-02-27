@@ -11,7 +11,7 @@ func GenerateJWT(userID string, username string) (string, error) {
 	secret := []byte(os.Getenv("JWT_SECRET"))
 
 	claims := jwt.MapClaims{
-		"userID":   userID,
+		"userId":   userID,
 		"username": username,
 		"exp":      time.Now().Add(time.Hour * 1).Unix(),
 	}

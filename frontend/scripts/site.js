@@ -36,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
 const registerBtn = document.getElementById("registerBtn");
 const loginBtn = document.getElementById("loginBtn");
 const logoutBtn = document.getElementById("logoutBtn");
+const postBtn = document.getElementById("postBtn");
 
 function parseJWT(token) {
     try {
@@ -181,5 +182,45 @@ if (logoutBtn) {
     logoutBtn.addEventListener("click", () => {
         localStorage.removeItem("token");
         window.location.href = "login.html";
+    })
+}
+
+if (postBtn) {
+    postBtn.addEventListener("click", async () => {
+        const postBody = document.getElementById("postBody").value.trim();
+        const message = document.getElementById("postMessage");
+        const token = localStorage.getItem("token");
+
+        if (!postBody) {
+            message.textContent = "Post cannot be empty";
+            return;
+        }
+
+        postBtn.disabled = true;
+
+        try {
+            const res = await fetch("http://localhost:8080/posts", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + token
+                },
+                body: JSON.stringify({ content: postBody })
+            });
+
+            const data = await res.json();
+
+            console.log(data.message);
+            if (!res.ok) {
+                throw new Error(data.message || "Post failed");
+            }
+
+            message.textContent = "Post created successfully";
+            document.getElementById("postBody").value = "";
+        } catch (err) {
+            message.textContent = err.message;
+        } finally {
+            postBtn.disabled = false;
+        }
     })
 }

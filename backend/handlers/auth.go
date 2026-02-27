@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/v2/bson"
 	"golang.org/x/crypto/bcrypt"
 
@@ -105,5 +106,58 @@ func Login(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Login successful",
 		"token":   token,
+	})
+}
+
+func CreatePost(c *gin.Context) {
+	var body struct {
+		Content string `json:"content"`
+	}
+
+	if err := c.ShouldBindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Invalid request body",
+		})
+		return
+	}
+
+	if body.Content == "" {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Post cannot be empty",
+		})
+		return
+	}
+
+	userIDString, _ := c.Get("userId")
+
+	userID, err := primitive.ObjectIDFromHex(userIDString.(string))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Invalid user ID",
+		})
+		return
+	}
+
+	post := models.Post{
+		UserID:    userID,
+		Content:   body.Content,
+		CreatedAt: time.Now(),
+	}
+
+	collection := config.DB.Collection("posts")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	_, err = collection.InsertOne(ctx, post)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Could not save post",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Post created successfully",
 	})
 }

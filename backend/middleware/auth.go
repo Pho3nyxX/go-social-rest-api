@@ -14,7 +14,7 @@ func AuthMiddleware() gin.HandlerFunc {
 
 		authHeader := c.GetHeader("Authorization")
 		if authHeader == "" {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization header required"})
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization required"})
 			c.Abort()
 			return
 		}
@@ -37,6 +37,10 @@ func AuthMiddleware() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
+
+		claims := token.Claims.(jwt.MapClaims)
+
+		c.Set("userId", claims["userId"])
 
 		c.Next()
 	}
