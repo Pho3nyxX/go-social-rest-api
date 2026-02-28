@@ -11,10 +11,10 @@ import (
 	"go.mongodb.org/mongo-driver/v2/bson"
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/Pho3nyxX/social-media-restful-api-go/config"
-	"github.com/Pho3nyxX/social-media-restful-api-go/dto"
-	"github.com/Pho3nyxX/social-media-restful-api-go/models"
-	"github.com/Pho3nyxX/social-media-restful-api-go/utils"
+	"github.com/Pho3nyxX/go-social-rest-api/config"
+	"github.com/Pho3nyxX/go-social-rest-api/dto"
+	"github.com/Pho3nyxX/go-social-rest-api/models"
+	"github.com/Pho3nyxX/go-social-rest-api/utils"
 )
 
 func Register(c *gin.Context) {

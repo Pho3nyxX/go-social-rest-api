@@ -7,9 +7,9 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 
-	"github.com/Pho3nyxX/social-media-restful-api-go/config"
-	"github.com/Pho3nyxX/social-media-restful-api-go/routes"
-	"github.com/Pho3nyxX/social-media-restful-api-go/utils"
+	"github.com/Pho3nyxX/go-social-rest-api/config"
+	"github.com/Pho3nyxX/go-social-rest-api/routes"
+	"github.com/Pho3nyxX/go-social-rest-api/utils"
 	"github.com/joho/godotenv"
 )
 

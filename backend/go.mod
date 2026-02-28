@@ -1,4 +1,4 @@
-module github.com/Pho3nyxX/social-media-restful-api-go
+module github.com/Pho3nyxX/go-social-rest-api
 
 go 1.25.6
 
