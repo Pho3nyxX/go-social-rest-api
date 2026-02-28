@@ -161,3 +161,35 @@ func CreatePost(c *gin.Context) {
 		"message": "Post created successfully",
 	})
 }
+
+func GetPosts(c *gin.Context) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	cursor, err := config.DB.Collection("posts").Find(ctx, bson.M{}, nil)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch posts"})
+		return
+	}
+	defer cursor.Close(ctx)
+
+	var posts []models.Post
+	if err := cursor.All(ctx, &posts); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to decode posts"})
+		return
+	}
+
+	for i := range posts {
+		var user models.User
+
+		err := config.DB.Collection("users").
+			FindOne(ctx, bson.M{"_id": posts[i].UserID}).
+			Decode(&user)
+
+		if err == nil {
+			posts[i].Username = user.Username
+		}
+	}
+
+	c.JSON(http.StatusOK, gin.H{"posts": posts})
+}

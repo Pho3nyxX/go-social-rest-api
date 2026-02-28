@@ -9,6 +9,7 @@ import (
 type Post struct {
 	ID        primitive.ObjectID `bson:"_id,omitempty" json:"id"`
 	UserID    primitive.ObjectID `bson:"userId" json:"userId"`
+	Username  string             `bson:"username,omitempty" json:"username"`
 	Content   string             `bson:"content" json:"content"`
 	CreatedAt time.Time          `bson:"createdAt" json:"createdAt"`
 }

@@ -31,6 +31,8 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
     }
+
+    fetchPosts();
 });
 
 const registerBtn = document.getElementById("registerBtn");
@@ -217,10 +219,54 @@ if (postBtn) {
 
             message.textContent = "Post created successfully";
             document.getElementById("postBody").value = "";
+
+            setTimeout(() => {
+                window.location.href = "dashboard.html";
+            }, 800);
+
         } catch (err) {
             message.textContent = err.message;
         } finally {
             postBtn.disabled = false;
         }
     })
+}
+
+async function fetchPosts() {
+    const token = localStorage.getItem("token");
+    const postsContainer = document.getElementById("postsContainer");
+
+    if (!postsContainer || !token) return;
+
+    try {
+        const res = await fetch("http://localhost:8080/posts", {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            postsContainer.innerHTML = "<p>Failed to load posts.</p>";
+            return;
+        }
+
+        postsContainer.innerHTML = "";
+
+        data.posts.reverse().forEach(post => {
+            const postEl = document.createElement("div");
+            postEl.className = "post-card";
+            postEl.innerHTML = `
+                <strong>${post.username || "Unknown"}</strong>
+                <p>${post.content}</p>
+                <small>${new Date(post.createdAt).toLocaleString()}</small>
+            `;
+            postsContainer.appendChild(postEl);
+        });
+
+    } catch (err) {
+        console.error(err);
+        postsContainer.innerHTML = "<p>Error loading posts.</p>";
+    }
 }
