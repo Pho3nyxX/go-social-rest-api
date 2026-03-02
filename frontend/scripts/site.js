@@ -263,7 +263,7 @@ async function fetchPosts() {
                     <strong class="post-username">
                         ${post.username || "Unknown"}
                     </strong>
-                    <button class="delete-btn" data-id="${post._id}">
+                    <button class="deleteBtn" data-id="${post.id}">
                         Delete
                     </button>
                 </div>
@@ -277,11 +277,40 @@ async function fetchPosts() {
                 </small>
             `;
 
+            const deleteBtn = postEl.querySelector(".deleteBtn");
+
+            deleteBtn.addEventListener("click", (e) => {
+                const postId = e.target.dataset.id;
+                deletePost(postId);
+            });
+
             postsContainer.appendChild(postEl);
         });
 
     } catch (err) {
         console.error(err);
         postsContainer.innerHTML = "<p>Error loading posts.</p>";
+    }
+}
+
+async function deletePost(postId) {
+    const token = localStorage.getItem("token");
+
+    try {
+        const res = await fetch(`http://localhost:8080/api/posts/${postId}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (!res.ok) {
+            alert("Failed to delete post");
+            return;
+        }
+
+        fetchPosts();
+    } catch (err) {
+        console.error(err);
     }
 }

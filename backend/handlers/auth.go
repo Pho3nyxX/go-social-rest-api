@@ -193,3 +193,52 @@ func GetPosts(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"posts": posts})
 }
+
+func DeletePost(c *gin.Context) {
+	postIDParam := c.Param("id")
+
+	postID, err := primitive.ObjectIDFromHex(postIDParam)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid post ID"})
+		return
+	}
+
+	userIDInterface, exists := c.Get("userId")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not found in token"})
+		return
+	}
+
+	userIDHex, ok := userIDInterface.(string)
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid user ID type"})
+		return
+	}
+
+	userID, err := primitive.ObjectIDFromHex(userIDHex)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid user ID"})
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	filter := bson.M{
+		"_id":    postID,
+		"userId": userID,
+	}
+
+	result, err := config.DB.Collection("posts").DeleteOne(ctx, filter)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete"})
+		return
+	}
+
+	if result.DeletedCount == 0 {
+		c.JSON(http.StatusForbidden, gin.H{"error": "Not authorized to delete"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Post deleted"})
+}

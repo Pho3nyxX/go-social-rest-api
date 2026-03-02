@@ -10,13 +10,12 @@ import (
 func RegisterRoutes(r *gin.Engine) {
 	r.POST("/register", handlers.Register)
 	r.POST("/login", handlers.Login)
-	// r.POST("/posts", middleware.AuthMiddleware(), handlers.CreatePost)
-	// r.GET("/posts", middleware.AuthMiddleware(), handlers.GetPosts)
 
 	protected := r.Group("/api")
 	protected.Use(middleware.AuthMiddleware())
 	{
 		protected.POST("/posts", handlers.CreatePost)
 		protected.GET("/posts", handlers.GetPosts)
+		protected.DELETE("/posts/:id", handlers.DeletePost)
 	}
 }
