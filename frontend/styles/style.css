@@ -176,10 +176,11 @@ button {
 
       h1 {
         font-size: 40px;
+        text-align: center;
+
       }
 
-      h1,
-      p {
+      h1, .dashboard-intro {
         text-align: center;
       }
 
@@ -190,6 +191,62 @@ button {
         textarea {
           height: 30vh;
         }
+      }
+
+      .post-card {
+        background: #ffffff;
+        padding: 16px;
+        margin-bottom: 15px;
+        border-radius: 10px;
+        border: 1px solid #e5e5e5;
+        transition: all 0.2s ease-in-out;
+
+        &:hover {
+          box-shadow: 0 8px 20px #00000014;
+          transform: translateY(-2px);
+        }
+      }
+
+      .post-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+
+        .post-username {
+          font-size: 16px;
+          width: 80px;
+        }
+
+        .delete-btn {
+          padding: 6px 10px;
+          border-radius: 6px;
+          width: 75px;
+          font-size: 12px;
+          border: none;
+          cursor: pointer;
+          background-color: #ff4d4f;
+          color: #ffffff;
+          transition: all 0.2s ease;
+
+          &:hover {
+            background-color: #d9363e;
+          }
+        }
+      }
+
+      .post-content {
+        margin: 10px 0;
+        line-height: 1.5;
+
+        p {
+          text-align: left;
+        }
+      }
+
+      .post-date {
+        color: #777777;
+        font-size: 12px;
       }
     }
   }

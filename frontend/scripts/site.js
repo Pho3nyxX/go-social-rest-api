@@ -201,7 +201,7 @@ if (postBtn) {
         postBtn.disabled = true;
 
         try {
-            const res = await fetch("http://localhost:8080/posts", {
+            const res = await fetch("http://localhost:8080/api/posts", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -239,7 +239,7 @@ async function fetchPosts() {
     if (!postsContainer || !token) return;
 
     try {
-        const res = await fetch("http://localhost:8080/posts", {
+        const res = await fetch("http://localhost:8080/api/posts", {
             headers: {
                 "Authorization": `Bearer ${token}`
             }
@@ -257,11 +257,26 @@ async function fetchPosts() {
         data.posts.reverse().forEach(post => {
             const postEl = document.createElement("div");
             postEl.className = "post-card";
+
             postEl.innerHTML = `
-                <strong>${post.username || "Unknown"}</strong>
-                <p>${post.content}</p>
-                <small>${new Date(post.createdAt).toLocaleString()}</small>
+                <div class="post-header">
+                    <strong class="post-username">
+                        ${post.username || "Unknown"}
+                    </strong>
+                    <button class="delete-btn" data-id="${post._id}">
+                        Delete
+                    </button>
+                </div>
+
+                <p class="post-content">
+                    ${post.content}
+                </p>
+
+                <small class="post-date">
+                    ${new Date(post.createdAt).toLocaleString()}
+                </small>
             `;
+
             postsContainer.appendChild(postEl);
         });
 
