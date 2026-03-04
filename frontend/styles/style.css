@@ -180,7 +180,8 @@ button {
 
       }
 
-      h1, .dashboard-intro {
+      h1,
+      .dashboard-intro {
         text-align: center;
       }
 
@@ -218,19 +219,38 @@ button {
           width: 80px;
         }
 
-        .deleteBtn {
-          padding: 6px 10px;
-          border-radius: 6px;
-          width: 75px;
-          font-size: 12px;
-          border: none;
-          cursor: pointer;
-          background-color: #ff4d4f;
-          color: #ffffff;
-          transition: all 0.2s ease;
+        .post-actions {
+          display: flex;
+          gap: 8px;
 
-          &:hover {
-            background-color: #d9363e;
+          .editBtn {
+            background-color: #28a745;
+            color: #ffffff;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+
+            &:hover {
+              background-color: #1e9038;
+            }
+          }
+
+          .deleteBtn {
+            padding: 6px 10px;
+            border-radius: 6px;
+            width: 75px;
+            font-size: 12px;
+            border: none;
+            cursor: pointer;
+            background-color: #ff4d4f;
+            color: #ffffff;
+            transition: all 0.2s ease;
+
+            &:hover {
+              background-color: #d9363e;
+            }
           }
         }
       }

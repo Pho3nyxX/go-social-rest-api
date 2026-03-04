@@ -263,9 +263,16 @@ async function fetchPosts() {
                     <strong class="post-username">
                         ${post.username || "Unknown"}
                     </strong>
-                    <button class="deleteBtn" data-id="${post.id}">
-                        Delete
-                    </button>
+
+                    <div class="post-actions">
+                        <button class="editBtn" data-id="${post.id}">
+                            Edit
+                        </button>
+
+                        <button class="deleteBtn" data-id="${post.id}">
+                            Delete
+                        </button>
+                    </div>
                 </div>
 
                 <p class="post-content">
@@ -278,10 +285,23 @@ async function fetchPosts() {
             `;
 
             const deleteBtn = postEl.querySelector(".deleteBtn");
+            const editBtn = postEl.querySelector(".editBtn");
 
             deleteBtn.addEventListener("click", (e) => {
                 const postId = e.target.dataset.id;
                 deletePost(postId);
+            });
+
+            editBtn.addEventListener("click", (e) => {
+                const postId = e.target.dataset.id;
+
+                const contentEl = postEl.querySelector(".post-content");
+
+                const newContent = prompt("Edit your post:", contentEl.textContent);
+
+                if (!newContent) return;
+
+                updatePost(postId, newContent);
             });
 
             postsContainer.appendChild(postEl);
@@ -310,6 +330,36 @@ async function deletePost(postId) {
         }
 
         fetchPosts();
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+async function updatePost(postId, content) {
+    const token = localStorage.getItem("token");
+
+    try {
+        const res = await fetch(`http://localhost:8080/api/posts/${postId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({ content })
+        });
+
+        let data = {};
+        if (res.status !== 204) {
+            data = await res.json();
+        }
+
+        if (!res.ok) {
+            alert("Failed to update post");
+            return;
+        }
+
+        fetchPosts();
+        alert(data.message);
     } catch (err) {
         console.error(err);
     }

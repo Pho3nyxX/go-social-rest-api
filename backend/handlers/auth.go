@@ -242,3 +242,50 @@ func DeletePost(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "Post deleted"})
 }
+
+func UpdatePost(c *gin.Context) {
+	postID := c.Param("id")
+	userID := c.GetString("userId")
+
+	var body struct {
+		Content string `json:"content"`
+	}
+
+	if err := c.ShouldBindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
+		return
+	}
+
+	objID, err := primitive.ObjectIDFromHex(postID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid post ID"})
+		return
+	}
+
+	collection := config.GetCollection("posts")
+
+	uid, _ := primitive.ObjectIDFromHex(userID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
+		return
+	}
+
+	filter := bson.M{
+		"_id":    objID,
+		"userId": uid,
+	}
+
+	update := bson.M{
+		"$set": bson.M{
+			"content": body.Content,
+		},
+	}
+
+	result, err := collection.UpdateOne(context.TODO(), filter, update)
+	if err != nil || result.ModifiedCount == 0 {
+		c.JSON(http.StatusForbidden, gin.H{"error": "Update failed"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Post updated successfully"})
+}

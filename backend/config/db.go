@@ -37,3 +37,7 @@ func ConnectDB() {
 	DB = client.Database(dbName)
 	log.Println("Connected established.")
 }
+
+func GetCollection(name string) *mongo.Collection {
+	return DB.Collection(name)
+}
