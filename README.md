@@ -17,7 +17,6 @@ It serves as the backend for a simple social media platform where users can crea
 - Framework: Gin
 - Database: MongoDB
 - Authentication: JWT
-- Testing: Postman
 
 ---
 
