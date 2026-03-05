@@ -177,7 +177,6 @@ button {
       h1 {
         font-size: 40px;
         text-align: center;
-
       }
 
       h1,
@@ -256,17 +255,56 @@ button {
       }
 
       .post-content {
-        margin: 10px 0;
+        margin: 0;
+        padding: 0;
+        font-size: 16px;
         line-height: 1.5;
-
-        p {
-          text-align: left;
-        }
+        text-align: left;
       }
 
       .post-date {
         color: #777777;
         font-size: 12px;
+      }
+
+      .edit-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+
+        .edit-box {
+          background: #c6d599;
+          padding: 20px;
+          border-radius: 8px;
+          width: 400px;
+
+          #editPostBody {
+            padding: 2px;
+            border-radius: 4px;
+            font-size: 14px;
+            border: 1px solid #777777;
+          }
+        }
+
+        .btn-container {
+          display: flex;
+          justify-content: flex-end;
+          gap: 10px;
+
+          #saveEdit,
+          #cancelEdit {
+            width: 85px;
+            padding: 6px;
+            font-size: 14px;
+            color: #ffffff;
+          }
+        }
       }
     }
   }

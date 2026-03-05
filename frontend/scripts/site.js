@@ -5,6 +5,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const currentPage = window.location.pathname.split("/").pop();
     const protectedPages = ["dashboard.html", "post.html"];
     const publicPages = ["login.html", "register.html"];
+    const editModal = document.getElementById("editModal");
+    const editBox = editModal.querySelector(".edit-box");
+    const saveEditBtn = document.getElementById("saveEdit");
+    const cancelEditBtn = document.getElementById("cancelEdit");
 
     if (protectedPages.includes(currentPage)) {
         if (!token) {
@@ -32,6 +36,29 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    saveEditBtn.addEventListener("click", () => {
+        const newContent = document.getElementById("editPostBody").value;
+        if (!newContent.trim()) return;
+        updatePost(editingPostId, newContent);
+        editModal.style.display = "none";
+    });
+
+    cancelEditBtn.addEventListener("click", () => {
+        editModal.style.display = "none";
+    });
+
+    editModal.addEventListener("click", (e) => {
+        if (!editBox.contains(e.target)) {
+            editModal.style.display = "none";
+        }
+    });
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+            editModal.style.display = "none";
+        }
+    });
+
     fetchPosts();
 });
 
@@ -39,6 +66,7 @@ const registerBtn = document.getElementById("registerBtn");
 const loginBtn = document.getElementById("loginBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 const postBtn = document.getElementById("postBtn");
+let editingPostId = null;
 
 function parseJWT(token) {
     try {
@@ -275,9 +303,7 @@ async function fetchPosts() {
                     </div>
                 </div>
 
-                <p class="post-content">
-                    ${post.content}
-                </p>
+                <p class="post-content">${post.content}</p>
 
                 <small class="post-date">
                     ${new Date(post.createdAt).toLocaleString()}
@@ -292,16 +318,13 @@ async function fetchPosts() {
                 deletePost(postId);
             });
 
-            editBtn.addEventListener("click", (e) => {
-                const postId = e.target.dataset.id;
-
+            editBtn.addEventListener("click", () => {
                 const contentEl = postEl.querySelector(".post-content");
+                editingPostId = editBtn.dataset.id;
 
-                const newContent = prompt("Edit your post:", contentEl.textContent);
+                document.getElementById("editPostBody").value = contentEl.textContent;
 
-                if (!newContent) return;
-
-                updatePost(postId, newContent);
+                document.getElementById("editModal").style.display = "flex";
             });
 
             postsContainer.appendChild(postEl);
