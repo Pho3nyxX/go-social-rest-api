@@ -1,5 +1,12 @@
 import { validateUsername, validateEmail, validatePassword } from "./validation.js";
 
+const registerBtn = document.getElementById("registerBtn");
+const loginBtn = document.getElementById("loginBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+const postBtn = document.getElementById("postBtn");
+let editingPostId = null;
+let postIdToDelete = null;
+
 document.addEventListener("DOMContentLoaded", () => {
     const token = localStorage.getItem("token");
     const currentPage = window.location.pathname.split("/").pop();
@@ -9,6 +16,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const editBox = editModal.querySelector(".edit-box");
     const saveEditBtn = document.getElementById("saveEdit");
     const cancelEditBtn = document.getElementById("cancelEdit");
+    const deleteModal = document.getElementById("deleteModal");
+    const confirmDelete = document.getElementById("confirmDelete");
+    const cancelDelete = document.getElementById("cancelDelete");
 
     if (protectedPages.includes(currentPage)) {
         if (!token) {
@@ -59,14 +69,32 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    if (confirmDelete && deleteModal) {
+        confirmDelete.addEventListener("click", () => {
+            if (postIdToDelete) {
+                deletePost(postIdToDelete);
+                postIdToDelete = null;
+                deleteModal.style.display = "none";
+            }
+        });
+    }
+
+    if (cancelDelete && deleteModal) {
+        cancelDelete.addEventListener("click", () => {
+            deleteModal.style.display = "none";
+            postIdToDelete = null;
+        });
+    }
+
+    window.addEventListener("click", (e) => {
+        if (e.target === deleteModal) {
+            deleteModal.style.display = "none";
+            postIdToDelete = null;
+        }
+    })
+
     fetchPosts();
 });
-
-const registerBtn = document.getElementById("registerBtn");
-const loginBtn = document.getElementById("loginBtn");
-const logoutBtn = document.getElementById("logoutBtn");
-const postBtn = document.getElementById("postBtn");
-let editingPostId = null;
 
 function parseJWT(token) {
     try {
@@ -314,8 +342,11 @@ async function fetchPosts() {
             const editBtn = postEl.querySelector(".editBtn");
 
             deleteBtn.addEventListener("click", (e) => {
-                const postId = e.target.dataset.id;
-                deletePost(postId);
+                postIdToDelete = e.target.dataset.id;
+
+                if (deleteModal) {
+                    deleteModal.style.display = "flex";
+                }
             });
 
             editBtn.addEventListener("click", () => {
